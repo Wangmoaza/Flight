@@ -1,5 +1,7 @@
 // Bongki Moon (bkmoon@snu.ac.kr)
 
+import java.util.*;
+
 public class Planner {
 
   // constructor
