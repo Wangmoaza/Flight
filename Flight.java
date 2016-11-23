@@ -1,21 +1,21 @@
 // Bongki Moon (bkmoon@snu.ac.kr)
-import java.lang.Short;
+import java.lang.Integer;
 
 public class Flight
 {
 
 	private String src;
 	private String dest;
-	private short stime;
-	private short dtime;
+	private int stime;
+	private int dtime;
 	
   // constructor
 	public Flight(String src, String dest, String stime, String dtime) 
 	{
 		this.src = src;
 		this.dest = dest;
-		this.stime = Short.parseShort(stime);
-		this.dtime = Short.parseShort(dtime);
+		this.stime = Integer.parseInt(stime);
+		this.dtime = Integer.parseInt(dtime);
 		
 		// validity check
 		if (this.stime >= 2400) this.stime -= 2400;
