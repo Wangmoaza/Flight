@@ -8,7 +8,6 @@ public class Flight
 	private String dest;
 	private short stime;
 	private short dtime;
-	private int duration; // in minutes
 	
   // constructor
 	public Flight(String src, String dest, String stime, String dtime) 
@@ -21,8 +20,6 @@ public class Flight
 		// validity check
 		if (this.stime >= 2400) this.stime -= 2400;
 		if (this.dtime >= 2400) this.dtime -= 2400;
-		
-		this.duration = cal_duration();
 	}
 
 	// calculate the duration of flight in minutes
