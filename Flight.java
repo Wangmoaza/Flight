@@ -23,7 +23,7 @@ public class Flight
 	}
 
 	// calculate the duration of flight in minutes
-	public int cal_duration()
+	public int duration()
 	{
 		int startMin = (stime / 100) * 60 + (stime % 100);
 		int endMin = (dtime / 100) * 60 + (dtime % 100);
@@ -44,6 +44,17 @@ public class Flight
 	{
 		return dtime;
 	}
+	
+	public String source()
+	{
+		return src;
+	}
+	
+	public String dest()
+	{
+		return dest;
+	}
+	
 	
 	public void print() 
 	{

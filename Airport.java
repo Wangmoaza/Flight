@@ -2,22 +2,22 @@
 
 import java.io.*;
 import java.util.*;
-import java.lang.Short;
+import java.lang.Integer;
 
 
 public class Airport
 {
 	private String port;
 	private int mct; // minimum connection time in minutes
-	private LinkedList<Flight> flights;
+	private LinkedList<Destination> destList;
 
 	// constructor
 	public Airport(String port, String connectTime) 
 	{
 		this.port = port;
-		short time = Short.parseShort(connectTime);
+		int time = Integer.parseInt(connectTime);
 		this.mct = (time / 100) * 60 + (time % 100); // convert to minutes
-		flights = new LinkedList<Flight>();
+		destList = new LinkedList<Destination>();
 	}	
 
 	public void print() 
@@ -30,14 +30,34 @@ public class Airport
 		return port;
 	}
 	
-	public LinkedList<Flight> flights()
+	public int mct()
 	{
-		return flights;
+		return mct;
 	}
 	
-	@Override
-	public int hashCode()
+	public void addFlight(Flight flt)
 	{
-		return port.hashCode();
+		ListIterator<Destination> destIt = destList.listIterator();
+		while (destIt.hasNext())
+		{
+			Destination dest = destIt.next();
+			if (dest.name().equals(flt.dest()))
+			{
+				dest.addFlight(flt);
+				break;
+			}	
+		}
+		
+		if (!destIt.hasNext()) //there was no match in destList
+		{
+			Destination newDest = new Destination(flt.dest());
+			newDest.addFlight(flt);
+			destList.addFirst(newDest);
+		}
+	}
+	
+	public LinkedList<Destination> destList()
+	{
+		return destList;
 	}
 }
