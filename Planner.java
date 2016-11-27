@@ -10,7 +10,7 @@ import java.util.*;
 public class Planner {
 
 	private HashMap<String, Airport> hm;
-	public static final int BIGNUM = 9999999;
+	public static final int DAY = 60 * 24;
 	
   // constructor
 	public Planner(LinkedList<Airport> portList, LinkedList<Flight> fltList) 
@@ -31,6 +31,7 @@ public class Planner {
 			Airport src = hm.get(flt.source());
 			src.addFlight(flt);
 		}
+		
 	}
 
 	private Flight findBestFlight(String s, String d, int time)
@@ -45,49 +46,34 @@ public class Planner {
 		
 		int mct = srcPort.mct(); //mct in minutes
 		int departTime = time + mct;
-		
-		int min = BIGNUM;
-		
-		
-	}
-	
-	public static int addTime(int t1, int t2)
-	{
-		int min = t1 % 100 + t2 % 100;
-		int hr = t1 / 100 + t2 / 100 + min / 60;
-		return hr * 100 + min % 60;
-	}
-	
-	public static int substractTime(int t1, int t2)
-	{
-		int big = 0;
-		int small = 0;
-		if (t1 > t2)
-		{
-			big = t1;
-			small = t2;
-		}
-		else if (t1 < t2)
-		{
-			big = t2;
-			small = t1;
-		}
-		else
-			return 0;
-		
-		int min = big % 100 - small % 100;
-		int hr = big / 100 - small / 100;
-		if (min < 0)
-		{
-			
-		}
-		
+		return dest.findBestFlight(departTime);
 	}
 	
 	public Itinerary Schedule(String start, String end, String departure) 
 	{
+		// construct initial Itinerary
+		
 		return new Itinerary();
 	}
-
+	
+	public static int convert2min(int time)
+	{
+		return (time / 100) * 60 + (time % 100);
+	}
+	
+	public static int convert2hr(int time)
+	{
+		return (time /60) * 100 + time % 60;
+	}
+	
+	// calculate the duration of flight in minutes
+	public static int duration(int start, int end)
+	{
+		int diff = end - start;
+		if (diff >= 0)
+			return diff;
+		
+		return diff + DAY;
+	}
 }
 

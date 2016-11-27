@@ -16,7 +16,7 @@ public class Airport
 	{
 		this.port = port;
 		int time = Integer.parseInt(connectTime);
-		this.mct = (time / 100) * 60 + (time % 100); // convert to minutes
+		this.mct = Planner.convert2min(time); // convert to minutes
 		destList = new LinkedList<Destination>();
 	}	
 

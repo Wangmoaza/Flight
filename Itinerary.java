@@ -2,8 +2,11 @@
 
 public class Itinerary
 {
-
-  // constructor
+	private HeapEntry[] heap;
+	private int pos;
+	private int size; // number of elements currently in heap
+	
+	// constructor
 	public Itinerary() 
 	{
 		

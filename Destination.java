@@ -26,13 +26,26 @@ public class Destination {
 		fltList.addFirst(flt);
 	}
 	
+	// returns the best flight from departure time t (arrival time + mct)
 	public Flight findBestFlight(int t)
 	{
-		// returns the best flight from departure time t 
-		ListIterator<Flight> it = fltList.listIterator();
+		Flight best = fltList.getFirst();
+		int bestTime = Planner.duration(t, best.stime()) + best.onboardTime(); // waiting time + flight time
+		
+		// iterate through fltList to find best flight
+		ListIterator<Flight> it = fltList.listIterator(1);
 		while (it.hasNext())
 		{
+			Flight flt = it.next();
+			int time = Planner.duration(t, flt.stime()) + flt.onboardTime();
 			
+			if (time < bestTime)
+			{
+				best = flt;
+				bestTime = time;
+			}
 		}
+		
+		return best;
 	}
 }
