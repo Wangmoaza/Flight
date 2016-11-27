@@ -52,8 +52,10 @@ public class Planner {
 	public Itinerary Schedule(String start, String end, String departure) 
 	{
 		// construct initial Itinerary
-		
-		return new Itinerary();
+		// start should be at root
+		Itinerary plan = new Itinerary(hm.keySet(), start, end);
+		// TODO
+		return plan;
 	}
 	
 	public static int convert2min(int time)

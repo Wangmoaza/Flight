@@ -1,5 +1,5 @@
 
-public class HeapEntry {
+public class HeapEntry implements Comparable<HeapEntry> {
 
 	private String port;
 	private int distance;
@@ -35,5 +35,15 @@ public class HeapEntry {
 	public String name()
 	{
 		return port;
+	}
+	
+	public int compareTo(HeapEntry other)
+	{
+		if (distance > other.distance())
+			return 1;
+		else if (distance < other.distance())
+			return -1;
+		else
+			return 0;
 	}
 }
