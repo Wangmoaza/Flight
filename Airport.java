@@ -60,4 +60,16 @@ public class Airport
 	{
 		return destList;
 	}
+	
+	public Destination findDest(String target)
+	{
+		ListIterator<Destination> destIt = destList.listIterator();
+		while (destIt.hasNext())
+		{
+			Destination dest = destIt.next();
+			if (dest.name().equals(target))
+				return dest;
+		}
+		return null;
+	}
 }

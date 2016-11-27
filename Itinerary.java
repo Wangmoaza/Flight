@@ -6,9 +6,26 @@ public class Itinerary
   // constructor
 	public Itinerary() 
 	{
-		// FIXME
+		
 	}
 
+	public HeapEntry extractMin()
+	{
+		// TODO
+	}
+	
+	public void updateDistance(String port, Flight flt, int dist)
+	{
+		// TODO
+	}
+	
+	public boolean isInHeap(String port)
+	{
+		// TODO
+	}
+	
+	
+	
 	public boolean isFound() 
 	{
 		// FIXME

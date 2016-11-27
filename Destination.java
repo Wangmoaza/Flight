@@ -3,6 +3,7 @@ import java.util.*;
 public class Destination {
 	private String name;
 	private LinkedList<Flight> fltList;
+	public static int BIGNUM = 9999999;
 	
 	public Destination(String s)
 	{
@@ -23,5 +24,15 @@ public class Destination {
 	public void addFlight(Flight flt)
 	{
 		fltList.addFirst(flt);
+	}
+	
+	public Flight findBestFlight(int t)
+	{
+		// returns the best flight from departure time t 
+		ListIterator<Flight> it = fltList.listIterator();
+		while (it.hasNext())
+		{
+			
+		}
 	}
 }
