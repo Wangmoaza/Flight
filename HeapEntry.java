@@ -1,4 +1,8 @@
-
+/**
+ * Heap Entry in MinHeap
+ * @author Ha-Eun Hwangbo
+ *
+ */
 public class HeapEntry implements Comparable<HeapEntry> {
 
 	private String port;

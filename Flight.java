@@ -6,31 +6,37 @@ public class Flight
 	public static final int DAY = 60 * 24;
 	private String src;
 	private String dest;
-	private int stime; // in minutes from 00:00
-	private int dtime; // in minutes from 00:00
-	private int onboardTime;
+	private int stime; // military hour
+	private int dtime; // military hour
+	private int onboardTime; // in minutes
 
   // constructor
 	public Flight(String src, String dest, String stime, String dtime) 
 	{
 		this.src = src;
 		this.dest = dest;
-		this.stime = Planner.convert2min(Integer.parseInt(stime));
-		this.dtime = Planner.convert2min(Integer.parseInt(dtime));
+		this.stime = Integer.parseInt(stime);
+		this.dtime = Integer.parseInt(dtime);
+		int s_min = Planner.convert2min(this.stime);
+		int d_min = Planner.convert2min(this.dtime);
 		// validity check
-		if (this.stime >= DAY) this.stime -= DAY;
-		if (this.dtime >= DAY) this.dtime -= DAY;
-		this.onboardTime = Planner.duration(this.stime, this.dtime);
+		if (s_min >= DAY) s_min -= DAY;
+		if (d_min >= DAY) d_min -= DAY; 
+		this.onboardTime = Planner.duration(s_min, d_min);
 	}
 
 	public int stime()
 	{
-		return stime;
+		int s_min = Planner.convert2min(stime);
+		if (s_min >= DAY) s_min -= DAY;
+		return s_min;
 	}
 	
 	public int dtime()
 	{
-		return dtime;
+		int d_min = Planner.convert2min(dtime);
+		if (d_min >= DAY) d_min -= DAY;
+		return d_min;
 	}
 	
 	public String source()
@@ -50,8 +56,7 @@ public class Flight
 	
 	public void print() 
 	{
-		System.out.print(String.format("[%s->%s:%04d->%04d]", src, dest, 
-				Planner.convert2hr(stime), Planner.convert2hr(dtime)));
+		System.out.print(String.format("[%s->%s:%04d->%04d]", src, dest, stime, dtime));
 	}
 
 }

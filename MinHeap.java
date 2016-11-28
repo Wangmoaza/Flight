@@ -1,28 +1,31 @@
+/**
+ * MinHeap with locator 
+ * also used as set S and V-S in Dijkstra algorithm
+ * @author Ha-Eun Hwangbo
+ * 
+ */
+
 import java.util.*;
 
 public class MinHeap implements Iterable<HeapEntry> {
 	public static final int BIGNUM = 999999;
 	private HeapEntry[] heap;
-	private int[] pos;
-	private int size;
-	private int capacity;
-	private HashMap<String ,Airport> hm;
+	private int[] pos; // pos[i]: position of HeapEntry with id "i" in heap
+	private int size; // number of elements in heap
+	private HashMap<String ,Airport> hm; // for HeapEntry id
 	
 	public MinHeap(HashMap<String ,Airport> portMap, String start)
 	{
 		hm = portMap;
 		heap = new HeapEntry[portMap.size()];
-		pos = new int[heap.length]; // contains position in heap by port ID
-		capacity = heap.length;
+		pos = new int[heap.length];
 		size = heap.length;  
 		
 		// iterate through airportSet to construct heap
-		Iterator<String> it = hm.keySet().iterator();
 		int startPos = -1;
 		int idx = 0;
-		while (it.hasNext())
+		for (String curr : hm.keySet())
 		{
-			String curr = it.next();
 			int entryId = getId(curr);
 			if (start.equals(curr))
 				startPos = idx;
@@ -39,13 +42,11 @@ public class MinHeap implements Iterable<HeapEntry> {
 		}
 		
 		// move start airport to root
-		heap[startPos].setDistance(0);
-		
+		heap[startPos].setDistance(0);		
 		// update pos[]
 		pos[getId(heap[0].name())] = startPos;
 		pos[getId(heap[startPos].name())] = 0;
 		swapHeap(startPos, 0);
-		
 	}
 	
 	public HeapEntry extractMin()
@@ -81,15 +82,13 @@ public class MinHeap implements Iterable<HeapEntry> {
 		return size == 0;
 	}
 	
-	public HeapEntry[] getNonHeapPart()
+	public HeapEntry getNonHeapEntry(String port)
 	{
-		HeapEntry[] nonheap = new HeapEntry[capacity - size];
-		for (int i = 0; i < capacity - size; i++)
-		{
-			nonheap[i] = heap[i+size];
-		}
+		int id = getId(port);
+		if (pos[id] < size) // in heap
+			return null;
 		
-		return nonheap;
+		return heap[pos[id]];
 	}
 	
 	/*** private methods ***/
@@ -139,6 +138,7 @@ public class MinHeap implements Iterable<HeapEntry> {
 		}
 	}
 	
+	/*** Iterator ***/
 	public Iterator<HeapEntry> iterator()
 	{
 		return new HeapIterator();

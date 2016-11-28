@@ -1,11 +1,10 @@
 // Bongki Moon (bkmoon@snu.ac.kr)
-
+/**
+ * Represents a graph
+ * supports Dijkstra Algorithm
+ * @author Ha-Eun Hwangbo
+ */
 import java.util.*;
-
-// TODO
-// Think about this in hash map:
-// 1. Key: Airport, Value: Linked List of flights
-// 2. Key: String, Value: Airport (Linked list is in airport class)
 
 public class Planner {
 
@@ -33,9 +32,9 @@ public class Planner {
 		}
 	}
 
-	private Flight findBestFlight(String s, String d, int time)
+	private Flight findBestFlight(String s, String d, int time, boolean startFlag)
 	{
-		// time: time when passenger arrives at airport s
+		// time: time (in minutes) when passenger arrives at airport s
 		Airport srcPort = hm.get(s);
 		if (srcPort == null)
 			return null;
@@ -44,21 +43,24 @@ public class Planner {
 		if (dest == null)
 			return null;
 		
-		int mct = srcPort.mct(); //mct in minutes
-		int departTime = time + mct; // earliest possible departure time considering mct
+		int departTime = time;
+		if (!startFlag) // if s is not "the" start airport, consider mct
+			departTime += srcPort.mct(); // earliest possible departure time considering mct
+		
 		return dest.findBestFlight(departTime);
 	}
 	
 	public Itinerary Schedule(String start, String end, String departure) 
 	{
 		int departTime = convert2min(Integer.parseInt(departure));
+		if (departTime >= DAY) departTime -= DAY; // validity check
 		MinHeap minheap = new MinHeap(hm, start);
 		
 		// initialize
-		HeapEntry startEntry = minheap.extractMin();
+		minheap.extractMin(); // extract start airport
 		for (HeapEntry v : minheap) // for each v in V-S (i.e. minheap)
 		{
-			Flight bestFlt = findBestFlight(start, v.name(), departTime);
+			Flight bestFlt = findBestFlight(start, v.name(), departTime, true);
 			if (bestFlt != null)
 			{	
 				// dist = waiting time + onboard time
@@ -73,7 +75,7 @@ public class Planner {
 			Flight minFlight = minEntry.flight();
 			for (HeapEntry v : minheap)
 			{
-				Flight bestFlt =  findBestFlight(minEntry.name(), v.name(), minFlight.dtime());
+				Flight bestFlt =  findBestFlight(minEntry.name(), v.name(), minFlight.dtime(), false);
 				if (bestFlt == null)
 					continue;
 				
@@ -93,7 +95,7 @@ public class Planner {
 	
 	public static int convert2hr(int time)
 	{
-		return (time /60) * 100 + time % 60;
+		return (time / 60) * 100 + time % 60;
 	}
 	
 	// calculate the duration of from start to end in minutes

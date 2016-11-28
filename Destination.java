@@ -1,9 +1,13 @@
+/**
+ * Destinations from Airport Vertex (neighboring Vertices)
+ * @author Ha-Eun Hwangbo
+ */
+
 import java.util.*;
 
 public class Destination {
 	private String name;
 	private LinkedList<Flight> fltList;
-	public static int BIGNUM = 9999999;
 	
 	public Destination(String s)
 	{
@@ -26,7 +30,7 @@ public class Destination {
 		fltList.addFirst(flt);
 	}
 	
-	// returns the best flight from departure time t (arrival time + mct)
+	// returns the best flight from departure time t (t: arrival time + mct)
 	public Flight findBestFlight(int t)
 	{
 		Flight best = fltList.getFirst();

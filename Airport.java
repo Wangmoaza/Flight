@@ -16,8 +16,7 @@ public class Airport
 	public Airport(String port, String connectTime) 
 	{
 		this.port = port;
-		int time = Integer.parseInt(connectTime);
-		this.mct = Planner.convert2min(time); // convert to minutes
+		this.mct = Planner.convert2min(Integer.parseInt(connectTime)); // convert to minutes
 		destList = new LinkedList<Destination>();
 	}	
 
@@ -74,10 +73,8 @@ public class Airport
 	
 	public Destination findDest(String target)
 	{
-		ListIterator<Destination> destIt = destList.listIterator();
-		while (destIt.hasNext())
+		for (Destination dest : destList)
 		{
-			Destination dest = destIt.next();
 			if (dest.name().equals(target))
 				return dest;
 		}
