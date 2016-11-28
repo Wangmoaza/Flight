@@ -52,13 +52,13 @@ public class Planner {
 	
 	public Itinerary Schedule(String start, String end, String departure) 
 	{
-		int departTime = convert2min(Integer.parseInt(departure));
-		if (departTime >= DAY) departTime -= DAY; // validity check
-		MinHeap minheap = new MinHeap(hm, start);
-		
 		// validity check
 		if (!hm.containsKey(start) || !hm.containsKey(end))
 			return new Itinerary(false);
+		
+		int departTime = convert2min(Integer.parseInt(departure));
+		if (departTime >= DAY) departTime -= DAY; // validity check
+		MinHeap minheap = new MinHeap(hm, start);
 		
 		// initialize
 		minheap.extractMin(); // extract start airport

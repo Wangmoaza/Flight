@@ -40,7 +40,6 @@ public class MinHeap implements Iterable<HeapEntry> {
 			System.out.println("Error: start airport not found");
 			return;
 		}
-		
 		// move start airport to root
 		heap[startPos].setDistance(0);		
 		// update pos[]
