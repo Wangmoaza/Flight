@@ -3,18 +3,18 @@ public class HeapEntry implements Comparable<HeapEntry> {
 
 	private String port;
 	private int distance;
-	private Flight parent;
+	private Flight flt;
 	
 	public HeapEntry(String p, int d)
 	{
 		port = p;
 		distance = d;
-		parent = null;
+		flt = null;
 	}
 	
-	public void setParent(Flight flt)
+	public void setFlight(Flight f)
 	{
-		parent = flt;
+		flt = f;
 	}
 	
 	public void setDistance(int d)
@@ -22,9 +22,9 @@ public class HeapEntry implements Comparable<HeapEntry> {
 		distance = d;
 	}
 	
-	public Flight parent()
+	public Flight flight()
 	{
-		return parent;
+		return flt;
 	}
 	
 	public int distance()
