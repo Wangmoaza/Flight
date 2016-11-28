@@ -56,6 +56,10 @@ public class Planner {
 		if (departTime >= DAY) departTime -= DAY; // validity check
 		MinHeap minheap = new MinHeap(hm, start);
 		
+		// validity check
+		if (!hm.containsKey(start) || !hm.containsKey(end))
+			return new Itinerary(false);
+		
 		// initialize
 		minheap.extractMin(); // extract start airport
 		for (HeapEntry v : minheap) // for each v in V-S (i.e. minheap)

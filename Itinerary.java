@@ -6,6 +6,7 @@ public class Itinerary
 	private MinHeap minheap;
 	private String start;
 	private String end;
+	private boolean foundFlag;
 	
 	// constructor
 	public Itinerary(String src, String dest, MinHeap mh) 
@@ -13,11 +14,17 @@ public class Itinerary
 		start = src;
 		end = dest;
 		minheap = mh;
+		foundFlag = !minheap.isInHeap(end);
+	}
+	
+	public Itinerary(boolean flag)
+	{
+		foundFlag = false;
 	}
 
 	public boolean isFound() 
 	{
-		return !minheap.isInHeap(end);
+		return foundFlag;
 	}
 
 	public void print() 
