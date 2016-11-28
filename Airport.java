@@ -10,6 +10,7 @@ public class Airport
 	private String port;
 	private int mct; // minimum connection time in minutes
 	private LinkedList<Destination> destList;
+	private int index;
 
 	// constructor
 	public Airport(String port, String connectTime) 
@@ -33,6 +34,16 @@ public class Airport
 	public int mct()
 	{
 		return mct;
+	}
+	
+	public void setIndex(int i)
+	{
+		index = i;
+	}
+	
+	public int index()
+	{
+		return index;
 	}
 	
 	public void addFlight(Flight flt)

@@ -11,11 +11,11 @@ public class Itinerary
 	private int size; // number of elements currently in heap
 	
 	// constructor
-	public Itinerary(Set<String> airportSet, String src, String dest) 
+	public Itinerary(HashMap<String, Airport> hm, String src, String dest) 
 	{
 		start = src;
 		end = dest;
-		minheap = new MinHeap(airportSet, start);
+		minheap = new MinHeap(hm, start);
 	}
 
 	public boolean isFound() 
@@ -34,38 +34,45 @@ public class Itinerary
 		private HeapEntry[] entries;
 		private int[] posHeap;
 		private int size;
-		private HashMap<String, Integer> refMap;
+		private HashMap<String ,Airport> hm;
 		
-		public MinHeap(Set<String> airportSet, String start)
+		public MinHeap(HashMap<String ,Airport> portMap, String start)
 		{
-			entries = new HeapEntry[airportSet.size()];
+			hm = portMap;
+			entries = new HeapEntry[portMap.size()];
 			posHeap = new int[entries.length];
-			refMap = new HashMap<>(entries.length);
 			size = entries.length;
 			
 			// iterate through airportSet to construct heap
-			Iterator<String> it = airportSet.iterator();
-			int startIdx = -1;
-			int idx = 0;
+			Iterator<String> it = hm.keySet().iterator();
+			int startPos = -1;
+			int posIdx = 0;
 			while (it.hasNext())
 			{
 				String curr = it.next();
+				int entryIdx = hm.get(curr).index();
 				if (start.equals(curr))
-					startIdx = idx;
-				entries[idx] = new HeapEntry(curr, BIGNUM);
-				refMap.put(curr, idx);
-				posHeap[idx] = idx;
-				idx++;
+					startPos = posIdx;
+				if (entries[entryIdx] != null) // validity check
+					System.out.println("Error: entries[] already occupied");
+				entries[entryIdx] = new HeapEntry(curr, BIGNUM);
+				posHeap[posIdx] = entryIdx;
+				posIdx++;
 			}
 			
+			// validity check
+			if (startPos == -1)
+			{
+				System.out.println("Error: start airport not found");
+				return;
+			}
 			// move start airport to root
-			entries[startIdx].setDistance(0);
-			swap(startIdx, 0);
+			entries[posHeap[startPos]].setDistance(0);
+			swap(startPos, 0);
 		}
 		
 		public HeapEntry extractMin()
 		{
-			// TODO
 			if (isEmpty())
 				return null;
 			
@@ -81,7 +88,7 @@ public class Itinerary
 		
 		public void updateEntry(String port, Flight flt, int dist)
 		{
-			int idx = refMap.get(port);
+			int idx = hm.get(port).index();
 			if (entries[idx] == null) 
 			{
 				System.out.println("Error: accessed nonexisting entry");
@@ -95,7 +102,7 @@ public class Itinerary
 		
 		public boolean isInHeap(String port)
 		{
-			int idx = refMap.get(port);
+			int idx = hm.get(port).index();
 			return entries[idx] != null;
 		}
 		

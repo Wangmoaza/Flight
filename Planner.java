@@ -17,11 +17,14 @@ public class Planner {
 	{
 		// put airports to hash map hm by iterating through the linked list
 		hm = new HashMap<>();
+		int i = 0;
 		ListIterator<Airport> portIt = portList.listIterator();
 		while (portIt.hasNext()) 
 		{
 			Airport port = portIt.next();
+			port.setIndex(i);
 			hm.put(port.name(), port);
+			i++;
 		}
 		
 		ListIterator<Flight> fltIt = fltList.listIterator();
@@ -53,7 +56,7 @@ public class Planner {
 	{
 		// construct initial Itinerary
 		// start should be at root
-		Itinerary plan = new Itinerary(hm.keySet(), start, end);
+		Itinerary plan = new Itinerary(hm, start, end);
 		// TODO
 		return plan;
 	}
