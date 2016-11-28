@@ -20,8 +20,7 @@ public class Itinerary
 
 	public boolean isFound() 
 	{
-		// FIXME
-		return true;
+		return !minheap.isInHeap(end);
 	}
 
 	public void print() 
@@ -31,33 +30,31 @@ public class Itinerary
 
 	class MinHeap
 	{
-		private HeapEntry[] entries;
-		private int[] posHeap;
+		private HeapEntry[] heap;
+		private int[] pos;
 		private int size;
 		private HashMap<String ,Airport> hm;
 		
 		public MinHeap(HashMap<String ,Airport> portMap, String start)
 		{
 			hm = portMap;
-			entries = new HeapEntry[portMap.size()];
-			posHeap = new int[entries.length];
-			size = entries.length;
+			heap = new HeapEntry[portMap.size()];
+			pos = new int[heap.length]; // contains position in heap by port ID
+			size = heap.length;  
 			
 			// iterate through airportSet to construct heap
 			Iterator<String> it = hm.keySet().iterator();
 			int startPos = -1;
-			int posIdx = 0;
+			int idx = 0;
 			while (it.hasNext())
 			{
 				String curr = it.next();
-				int entryIdx = hm.get(curr).index();
+				int entryId = getId(curr);
 				if (start.equals(curr))
-					startPos = posIdx;
-				if (entries[entryIdx] != null) // validity check
-					System.out.println("Error: entries[] already occupied");
-				entries[entryIdx] = new HeapEntry(curr, BIGNUM);
-				posHeap[posIdx] = entryIdx;
-				posIdx++;
+					startPos = idx;
+				heap[idx] = new HeapEntry(curr, BIGNUM);
+				pos[entryId] = idx;
+				idx++;
 			}
 			
 			// validity check
@@ -66,9 +63,14 @@ public class Itinerary
 				System.out.println("Error: start airport not found");
 				return;
 			}
+			
 			// move start airport to root
-			entries[posHeap[startPos]].setDistance(0);
-			swap(startPos, 0);
+			heap[startPos].setDistance(0);
+			swapHeap(startPos, 0);
+			// update pos[]
+			pos[getId(heap[0].name())] = 0;
+			pos[getId(heap[startPos].name())] = startPos;
+			
 		}
 		
 		public HeapEntry extractMin()
@@ -76,34 +78,27 @@ public class Itinerary
 			if (isEmpty())
 				return null;
 			
-			int minIndex = posHeap[0];
-			HeapEntry minEntry = entries[minIndex];
-			swap(0, size-1); // swap the root with last element
-			siftDown(0);
+			HeapEntry minEntry = heap[0];
+			swapHeap(0, size-1); // swap the root with last element
+			// update pos[]
+			pos[getId(minEntry.name())] = size -1; // not part of the heap anymore
+			pos[getId(heap[0].name())] = 0;
 			size--;
-			entries[minIndex] = null;
-			posHeap[size] = -1; // not needed
+			siftDown(0);
 			return minEntry;
 		}
 		
 		public void updateEntry(String port, Flight flt, int dist)
 		{
-			int idx = hm.get(port).index();
-			if (entries[idx] == null) 
-			{
-				System.out.println("Error: accessed nonexisting entry");
-				return;
-			}
-			
-			entries[idx].setDistance(dist);
-			entries[idx].setParent(flt);
-			siftUp(idx); // heapify bottom-up	
+			int id = getId(port);			
+			heap[pos[id]].setDistance(dist);
+			heap[pos[id]].setParent(flt);
+			siftUp(pos[id]); // heapify bottom-up	
 		}
 		
 		public boolean isInHeap(String port)
 		{
-			int idx = hm.get(port).index();
-			return entries[idx] != null;
+			return pos[getId(port)] < size;
 		}
 		
 		public boolean isEmpty()
@@ -111,11 +106,16 @@ public class Itinerary
 			return size == 0;
 		}
 		
-		private void swap(int idx1, int idx2)
+		private int getId(String port)
 		{
-			int temp = posHeap[idx1];
-			posHeap[idx1] = posHeap[idx2];
-			posHeap[idx2] = temp;
+			return hm.get(port).id();
+		}
+		
+		private void swapHeap(int idx1, int idx2)
+		{
+			HeapEntry temp = heap[idx1];
+			heap[idx1] = heap[idx2];
+			heap[idx2] = temp;
 		}
 		
 		private void siftDown(int idx)
@@ -123,13 +123,16 @@ public class Itinerary
 			while (idx <= size/2 - 1) // while idx is not leaf
 			{
 				int smaller = 2 * idx + 1; // left child
-				if (smaller < size - 1 && entries[smaller].compareTo(entries[smaller+1]) > 0)
+				if (smaller < size - 1 && heap[smaller].compareTo(heap[smaller+1]) > 0)
 					smaller++; // change to right child
 				
-				if (entries[idx].compareTo(entries[smaller]) <= 0)
+				if (heap[idx].compareTo(heap[smaller]) <= 0)
 					return;
 				
-				swap(idx, smaller);
+				swapHeap(idx, smaller);
+				// update pos[]
+				pos[getId(heap[smaller].name())] = smaller;
+				pos[getId(heap[idx].name())] = idx;
 				idx = smaller;
 			}
 		}
@@ -137,10 +140,13 @@ public class Itinerary
 		private void siftUp(int idx)
 		{
 			// sift up while parent is bigger idx
-			while (idx > 0 && entries[(idx-1)/2].compareTo(entries[idx]) > 0)
+			while (idx > 0 && heap[(idx-1)/2].compareTo(heap[idx]) > 0)
 			{
-				swap(idx, (idx-1)/2);
-				idx = (idx-1)/2;
+				swapHeap(idx, (idx-1)/2);
+				// update pos[]
+				pos[getId(heap[(idx-1)/2].name())] = (idx-1)/2;
+				pos[getId(heap[idx].name())] = idx;
+				idx = (idx-1)/2; // climb up
 			}
 		}
 	}

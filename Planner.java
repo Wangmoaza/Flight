@@ -22,7 +22,7 @@ public class Planner {
 		while (portIt.hasNext()) 
 		{
 			Airport port = portIt.next();
-			port.setIndex(i);
+			port.setId(i);
 			hm.put(port.name(), port);
 			i++;
 		}
