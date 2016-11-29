@@ -61,8 +61,10 @@ public class Airport
 		if (!destIt.hasNext()) //there was no match in destList
 		{
 			Destination newDest = new Destination(flt.dest());
+			System.out.print("new Destination added: " + newDest.name()); // FIXME delete this
 			newDest.addFlight(flt);
 			destList.addFirst(newDest);
+			System.out.println(" !"); // FIXME delete this
 		}
 	}
 	

@@ -28,6 +28,7 @@ public class Destination {
 	public void addFlight(Flight flt)
 	{
 		fltList.addFirst(flt);
+		System.out.println("\tadded flight: " + fltList.getFirst());
 	}
 	
 	// returns the best flight from departure time t (t: arrival time + mct)
