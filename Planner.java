@@ -45,8 +45,10 @@ public class Planner {
 		
 		int departTime = time;
 		if (!startFlag) // if s is not "the" start airport, consider mct
+		{
 			departTime += srcPort.mct(); // earliest possible departure time considering mct
-		
+			if (departTime >= DAY) departTime -= DAY; // validity check
+		}
 		return dest.findBestFlight(departTime);
 	}
 	
@@ -77,10 +79,10 @@ public class Planner {
 		{
 			HeapEntry minEntry = minheap.extractMin();
 			Flight minFlight = minEntry.flight();
-			for (HeapEntry v : minheap)
+			for (HeapEntry v : minheap) //for each fringe v in V - S
 			{
 				Flight bestFlt =  findBestFlight(minEntry.name(), v.name(), minFlight.dtime(), false);
-				if (bestFlt == null)
+				if (bestFlt == null) // edge doesn't exist
 					continue;
 				
 				int dist = duration(minFlight.dtime(), bestFlt.stime()) + bestFlt.onboardTime();
