@@ -9,7 +9,7 @@ public class Airport
 {
 	private String port;
 	private int mct; // minimum connection time in minutes
-	private LinkedList<Destination> destList;
+	private HashMap<String, Destination> destMap;
 	private int id;
 
 	// constructor
@@ -17,7 +17,7 @@ public class Airport
 	{
 		this.port = port;
 		this.mct = Planner.convert2min(Integer.parseInt(connectTime)); // convert to minutes
-		destList = new LinkedList<Destination>();
+		destMap = new HashMap<>();
 	}	
 
 	public void print() 
@@ -47,34 +47,20 @@ public class Airport
 	
 	public void addFlight(Flight flt)
 	{
-		boolean foundFlag = false;
-		ListIterator<Destination> destIt = destList.listIterator();
-		while (destIt.hasNext())
-		{
-			Destination dest = destIt.next();
-			if (dest.name().equals(flt.dest()))
-			{
-				dest.addFlight(flt);
-				foundFlag = true;
-				break;
-			}	
-		}
+		Destination dest = destMap.get(flt.dest());
 		
-		if (!foundFlag) //there was no match in destList
+		if (dest != null)
+			dest.addFlight(flt);
+		else
 		{
 			Destination newDest = new Destination(flt.dest());
 			newDest.addFlight(flt);
-			destList.addFirst(newDest);
+			destMap.put(newDest.name(), newDest);
 		}
 	}
 	
 	public Destination findDest(String target)
 	{
-		for (Destination dest : destList)
-		{
-			if (dest.name().equals(target))
-				return dest;
-		}
-		return null;
+		return destMap.get(target);
 	}
 }
