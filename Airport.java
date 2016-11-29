@@ -47,6 +47,7 @@ public class Airport
 	
 	public void addFlight(Flight flt)
 	{
+		boolean foundFlag = false;
 		ListIterator<Destination> destIt = destList.listIterator();
 		while (destIt.hasNext())
 		{
@@ -54,21 +55,17 @@ public class Airport
 			if (dest.name().equals(flt.dest()))
 			{
 				dest.addFlight(flt);
+				foundFlag = true;
 				break;
 			}	
 		}
 		
-		if (!destIt.hasNext()) //there was no match in destList
+		if (!foundFlag) //there was no match in destList
 		{
 			Destination newDest = new Destination(flt.dest());
 			newDest.addFlight(flt);
 			destList.addFirst(newDest);
 		}
-	}
-	
-	public LinkedList<Destination> destList()
-	{
-		return destList;
 	}
 	
 	public Destination findDest(String target)

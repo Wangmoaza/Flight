@@ -86,6 +86,7 @@ public class Planner {
 					continue;
 				
 				int dist = duration(minFlight.dtime(), bestFlt.stime()) + bestFlt.onboardTime();
+				
 				if (minEntry.distance() + dist < v.distance())
 					minheap.updateEntry(v.name(), bestFlt, minEntry.distance() + dist);
 			}
