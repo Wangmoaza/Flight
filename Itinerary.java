@@ -35,7 +35,10 @@ public class Itinerary
 			return;
 		}
 		
-		minheap.print();
+		// FIXME delete this
+		System.out.println("final");
+		minheap.print(); 
+		
 		// add path to linked list
 		LinkedList<Flight> list = new LinkedList<>();
 		HeapEntry entry = minheap.getNonHeapEntry(end);

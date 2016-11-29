@@ -90,21 +90,17 @@ public class MinHeap implements Iterable<HeapEntry> {
 		return heap[pos[id]];
 	}
 	
+	// FIXME delete this
 	public void print()
 	{
-		System.out.println("heap array");
+		System.out.println("*** heap array ***");
 		for (int i = 0; i < heap.length; i++)
 		{
+			if (i == size) System.out.println("non heap");
 			System.out.println(String.format("%d : %s\t%s\t%d", 
 					i, heap[i].name(), heap[i].flight(), heap[i].distance()));
 		}
-		
-		System.out.println("\npos");
-		for(int i = 0; i < pos.length; i++)
-		{
-			System.out.println(String.format("%d : %d\t%s\t%d", 
-					i, getId(heap[pos[i]].name()), heap[pos[i]].name(), pos[i]));
-		}
+		System.out.println();
 	}
 	
 	/*** private methods ***/
