@@ -27,7 +27,7 @@ public class Destination {
 	
 	public void addFlight(Flight flt)
 	{
-		fltList.addFirst(flt);
+		fltList.add(flt);
 	}
 	
 	// returns the best flight from departure time t (t: arrival time + mct)
@@ -50,6 +50,7 @@ public class Destination {
 			}
 		}
 		
+		//System.out.println("best time: " + bestTime); // FIXME delete this
 		return best;
 	}
 }

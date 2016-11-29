@@ -10,6 +10,7 @@ public class Planner {
 
 	private HashMap<String, Airport> hm;
 	public static final int DAY = 60 * 24;
+	public static final int BIGNUM = 999999;
 	
   // constructor
 	public Planner(LinkedList<Airport> portList, LinkedList<Flight> fltList) 
@@ -48,6 +49,7 @@ public class Planner {
 		{
 			departTime += srcPort.mct(); // earliest possible departure time considering mct
 			if (departTime >= DAY) departTime -= DAY; // validity check
+			//System.out.println(s + " depart time " + departTime); // FIXME delete this
 		}
 		return dest.findBestFlight(departTime);
 	}
@@ -75,10 +77,18 @@ public class Planner {
 			}
 		}
 		
+		//System.out.println("Initialized");
+		//minheap.print(); // FIXME delete this
+		
 		while (minheap.isInHeap(end)) // while end airport is in V-S (i.e. minheap)
 		{
 			HeapEntry minEntry = minheap.extractMin();
 			Flight minFlight = minEntry.flight();
+			
+			//System.out.println("Extracted " + minEntry.name()); // FIXME delete this
+			// validity check: when a unconnected airport is extracted
+			if (minEntry.distance() >= BIGNUM || minFlight == null)
+				return new Itinerary(false);
 			
 			for (HeapEntry v : minheap) //for each fringe v in V - S
 			{
@@ -86,12 +96,19 @@ public class Planner {
 				if (bestFlt == null) // edge doesn't exist
 					continue;
 				
-				int dist = duration(minFlight.dtime(), bestFlt.stime()) + bestFlt.onboardTime();
+				Airport srcPort = hm.get(minEntry.name());
+				int canDepartTime = (minFlight.dtime() + srcPort.mct()) % DAY;
+				
+				int dist = srcPort.mct() + duration(canDepartTime, bestFlt.stime()) + bestFlt.onboardTime();
 				
 				if (minEntry.distance() + dist < v.distance())
+				{
 					minheap.updateEntry(v.name(), bestFlt, minEntry.distance() + dist);
+					//System.out.println("updated " + v.name()); // FIXME delete this
+				}
 			}
 			
+			//minheap.print(); //FIXME delete this
 		}
 		
 		return new Itinerary(start, end, minheap);
