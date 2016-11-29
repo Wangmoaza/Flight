@@ -37,10 +37,12 @@ public class Destination {
 		int bestTime = Planner.duration(t, best.stime()) + best.onboardTime(); // waiting time + flight time
 		
 		// iterate through fltList to find best flight
-		ListIterator<Flight> it = fltList.listIterator(1);
+		System.out.println("*** Find best flight ***"); // FIXME delete this 
+		ListIterator<Flight> it = fltList.listIterator();
 		while (it.hasNext())
 		{
 			Flight flt = it.next();
+			System.out.println("\t" + flt); // FIXME delete this
 			int time = Planner.duration(t, flt.stime()) + flt.onboardTime();
 			
 			if (time < bestTime)
