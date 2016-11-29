@@ -10,6 +10,7 @@ public class Planner {
 
 	private HashMap<String, Airport> hm;
 	public static final int DAY = 60 * 24;
+	public static final int BIGNUM = 999999;
 	
   // constructor
 	public Planner(LinkedList<Airport> portList, LinkedList<Flight> fltList) 
@@ -79,6 +80,11 @@ public class Planner {
 		{
 			HeapEntry minEntry = minheap.extractMin();
 			Flight minFlight = minEntry.flight();
+			
+			// validity check: when a unconnected airport is extracted
+			if (minEntry.distance() >= BIGNUM || minFlight == null)
+				return new Itinerary(false);
+			
 			for (HeapEntry v : minheap) //for each fringe v in V - S
 			{
 				Flight bestFlt =  findBestFlight(minEntry.name(), v.name(), minFlight.dtime(), false);
