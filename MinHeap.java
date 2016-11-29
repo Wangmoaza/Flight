@@ -90,6 +90,23 @@ public class MinHeap implements Iterable<HeapEntry> {
 		return heap[pos[id]];
 	}
 	
+	public void print()
+	{
+		System.out.println("heap array");
+		for (int i = 0; i < heap.length; i++)
+		{
+			System.out.println(String.format("%d : %s\t%s\t%d", 
+					i, heap[i].name(), heap[i].flight(), heap[i].distance()));
+		}
+		
+		System.out.println("\npos");
+		for(int i = 0; i < pos.length; i++)
+		{
+			System.out.println(String.format("%d : %d\t%s\t%d", 
+					i, getId(heap[pos[i]].name()), heap[pos[i]].name(), pos[i]));
+		}
+	}
+	
 	/*** private methods ***/
 	private int getId(String port)
 	{

@@ -34,7 +34,8 @@ public class Itinerary
 			System.out.println("No Flight Schedule Found.");
 			return;
 		}
-			
+		
+		minheap.print();
 		// add path to linked list
 		LinkedList<Flight> list = new LinkedList<>();
 		HeapEntry entry = minheap.getNonHeapEntry(end);

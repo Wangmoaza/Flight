@@ -58,5 +58,11 @@ public class Flight
 	{
 		System.out.print(String.format("[%s->%s:%04d->%04d]", src, dest, stime, dtime));
 	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("[%s->%s:%04d->%04d]", src, dest, stime, dtime);
+	}
 
 }
