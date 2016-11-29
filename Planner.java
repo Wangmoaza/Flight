@@ -76,15 +76,14 @@ public class Planner {
 		}
 		
 		//FIXME delete this
-		System.out.println("initialized");
-		minheap.print();
+		//System.out.println("initialized");
+		//minheap.print();
 		
-		// FIXME sometimes while loop is not executed when it should be!!!
 		while (minheap.isInHeap(end)) // while end airport is in V-S (i.e. minheap)
 		{
 			HeapEntry minEntry = minheap.extractMin();
 			Flight minFlight = minEntry.flight();
-			System.out.println("Extracted " + minEntry.name()); // FIXME delete this
+			//System.out.println("Extracted " + minEntry.name()); // FIXME delete this
 			
 			for (HeapEntry v : minheap) //for each fringe v in V - S
 			{
@@ -96,11 +95,11 @@ public class Planner {
 				if (minEntry.distance() + dist < v.distance())
 				{
 					minheap.updateEntry(v.name(), bestFlt, minEntry.distance() + dist);
-					System.out.println("updated " + v.name()); // FIXME delete this
+					//System.out.println("updated " + v.name()); // FIXME delete this
 				}
 			}
 			
-			minheap.print(); // FIXME delete this 
+			//minheap.print(); // FIXME delete this 
 		}
 		
 		return new Itinerary(start, end, minheap);

@@ -63,7 +63,7 @@ public class Airport
 		if (!foundFlag) //there was no match in destList
 		{
 			Destination newDest = new Destination(flt.dest());
-			System.out.println("new Destination added: " + newDest.name()); // FIXME delete this
+			//System.out.println("new Destination added: " + newDest.name()); // FIXME delete this
 			newDest.addFlight(flt);
 			destList.addFirst(newDest);
 		}

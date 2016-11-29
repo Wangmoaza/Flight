@@ -28,7 +28,7 @@ public class Destination {
 	public void addFlight(Flight flt)
 	{
 		fltList.addFirst(flt);
-		System.out.println("\tadded flight: " + fltList.getFirst());
+		//System.out.println("\tadded flight: " + fltList.getFirst()); // FIXME delete this
 	}
 	
 	// returns the best flight from departure time t (t: arrival time + mct)
@@ -38,12 +38,12 @@ public class Destination {
 		int bestTime = Planner.duration(t, best.stime()) + best.onboardTime(); // waiting time + flight time
 		
 		// iterate through fltList to find best flight
-		System.out.println("*** Find best flight ***"); // FIXME delete this 
+		//System.out.println("*** Find best flight ***"); // FIXME delete this 
 		ListIterator<Flight> it = fltList.listIterator();
 		while (it.hasNext())
 		{
 			Flight flt = it.next();
-			System.out.println("\t" + flt); // FIXME delete this
+			//System.out.println("\t" + flt); // FIXME delete this
 			int time = Planner.duration(t, flt.stime()) + flt.onboardTime();
 			
 			if (time < bestTime)
